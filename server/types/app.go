@@ -1,6 +1,7 @@
 package types
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 
@@ -77,7 +78,7 @@ type (
 		// Deliver the decided block with its txs to the Application
 		FinalizeBlock(*abci.RequestFinalizeBlock) (*abci.ResponseFinalizeBlock, error)
 		// Create application specific vote extension
-		ExtendVote(*abci.RequestExtendVote) (*abci.ResponseExtendVote, error)
+		ExtendVote(context.Context, *abci.RequestExtendVote) (*abci.ResponseExtendVote, error)
 		// Verify application's vote extension data
 		VerifyVoteExtension(*abci.RequestVerifyVoteExtension) (*abci.ResponseVerifyVoteExtension, error)
 		// Commit the state and return the application Merkle root hash

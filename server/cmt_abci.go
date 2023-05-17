@@ -36,8 +36,8 @@ func (w abciWrapper) ProcessProposal(_ context.Context, req *abci.RequestProcess
 func (w abciWrapper) FinalizeBlock(_ context.Context, req *abci.RequestFinalizeBlock) (*abci.ResponseFinalizeBlock, error) {
 	return w.app.FinalizeBlock(req)
 }
-func (w abciWrapper) ExtendVote(_ context.Context, req *abci.RequestExtendVote) (*abci.ResponseExtendVote, error) {
-	return w.app.ExtendVote(req)
+func (w abciWrapper) ExtendVote(ctx context.Context, req *abci.RequestExtendVote) (*abci.ResponseExtendVote, error) {
+	return w.app.ExtendVote(ctx, req)
 }
 func (w abciWrapper) VerifyVoteExtension(_ context.Context, req *abci.RequestVerifyVoteExtension) (*abci.ResponseVerifyVoteExtension, error) {
 	return w.app.VerifyVoteExtension(req)

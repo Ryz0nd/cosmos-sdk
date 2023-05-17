@@ -1,6 +1,7 @@
 package baseapp
 
 import (
+	"context"
 	"crypto/sha256"
 	"fmt"
 	"os"
@@ -519,7 +520,7 @@ func (app *BaseApp) ProcessProposal(req *abci.RequestProcessProposal) (resp *abc
 // Agreed upon vote extensions are made available to the proposer of the next
 // height and are committed in the subsequent height, i.e. H+2. An error is
 // returned if vote extensions are not enabled or if extendVote fails or panics.
-func (app *BaseApp) ExtendVote(req *abci.RequestExtendVote) (resp *abci.ResponseExtendVote, err error) {
+func (app *BaseApp) ExtendVote(_ context.Context, req *abci.RequestExtendVote) (resp *abci.ResponseExtendVote, err error) {
 	// Always reset state given that ExtendVote and VerifyVoteExtension can timeout
 	// and be called again in a subsequent round.
 	emptyHeader := cmtproto.Header{ChainID: app.chainID, Height: req.Height}
