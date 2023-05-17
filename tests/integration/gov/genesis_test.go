@@ -76,7 +76,7 @@ func TestImportExportQueues(t *testing.T) {
 	ctx := s1.app.BaseApp.NewContext(false, cmtproto.Header{})
 	addrs := simtestutil.AddTestAddrs(s1.BankKeeper, s1.StakingKeeper, ctx, 1, valTokens)
 
-	s1.app.FinalizeBlock(context.TODO(), &abci.RequestFinalizeBlock{
+	s1.app.FinalizeBlock(&abci.RequestFinalizeBlock{
 		Height: s1.app.LastBlockHeight() + 1,
 	})
 
@@ -140,12 +140,12 @@ func TestImportExportQueues(t *testing.T) {
 		},
 	)
 
-	s2.app.Commit(context.TODO(), &abci.RequestCommit{})
-	s2.app.FinalizeBlock(context.TODO(), &abci.RequestFinalizeBlock{
+	s2.app.Commit()
+	s2.app.FinalizeBlock(&abci.RequestFinalizeBlock{
 		Height: s2.app.LastBlockHeight() + 1,
 	})
 
-	s2.app.FinalizeBlock(context.TODO(), &abci.RequestFinalizeBlock{
+	s2.app.FinalizeBlock(&abci.RequestFinalizeBlock{
 		Height: s2.app.LastBlockHeight() + 1,
 	})
 

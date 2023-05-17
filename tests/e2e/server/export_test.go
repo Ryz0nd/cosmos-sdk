@@ -95,10 +95,10 @@ func TestExportCmd_Height(t *testing.T) {
 
 			// Fast forward to block `tc.fastForward`.
 			for i := int64(2); i <= tc.fastForward; i++ {
-				app.FinalizeBlock(context.TODO(), &abci.RequestFinalizeBlock{
+				app.FinalizeBlock(&abci.RequestFinalizeBlock{
 					Height: i,
 				})
-				app.Commit(context.TODO(), &abci.RequestCommit{})
+				app.Commit()
 			}
 
 			output := &bytes.Buffer{}
@@ -189,7 +189,7 @@ func setupApp(t *testing.T, tempDir string) (*simapp.SimApp, context.Context, ge
 			AppStateBytes:   appGenesis.AppState,
 		},
 	)
-	app.Commit(context.TODO(), &abci.RequestCommit{})
+	app.Commit()
 
 	cmd := server.ExportCmd(
 		func(_ log.Logger, _ dbm.DB, _ io.Writer, height int64, forZeroHeight bool, jailAllowedAddrs []string, appOptions types.AppOptions, modulesToExport []string) (types.ExportedApp, error) {

@@ -127,7 +127,7 @@ func (suite *SimTestSuite) TestSimulateMsgSend() {
 	ctx := suite.ctx.WithBlockTime(blockTime)
 
 	// begin new block
-	suite.app.FinalizeBlock(context.TODO(), &abci.RequestFinalizeBlock{
+	suite.app.FinalizeBlock(&abci.RequestFinalizeBlock{
 		Height: suite.app.LastBlockHeight() + 1,
 		Hash:   suite.app.LastCommitID().Hash,
 	})

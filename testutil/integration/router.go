@@ -88,17 +88,16 @@ func NewIntegrationApp(
 		if err := bApp.LoadLatestVersion(); err != nil {
 			panic(fmt.Errorf("failed to load application version from store: %w", err))
 		}
-		bApp.InitChain(context.TODO(), &cmtabcitypes.RequestInitChain{ChainId: appName, ConsensusParams: simtestutil.DefaultConsensusParams})
+		bApp.InitChain(&cmtabcitypes.RequestInitChain{ChainId: appName, ConsensusParams: simtestutil.DefaultConsensusParams})
 
 	} else {
 		if err := bApp.LoadLatestVersion(); err != nil {
 			panic(fmt.Errorf("failed to load application version from store: %w", err))
 		}
-		bApp.InitChain(context.TODO(), &cmtabcitypes.RequestInitChain{ChainId: appName})
+		bApp.InitChain(&cmtabcitypes.RequestInitChain{ChainId: appName})
 	}
 
-	bApp.InitChain(context.Background(), &cmtabcitypes.RequestInitChain{ChainId: appName})
-	bApp.Commit(context.TODO(), &cmtabcitypes.RequestCommit{})
+	bApp.Commit()
 
 	ctx := sdkCtx.WithBlockHeader(cmtproto.Header{ChainID: appName}).WithIsCheckTx(true)
 
@@ -125,14 +124,14 @@ func (app *App) RunMsg(msg sdk.Msg, option ...Option) (*codectypes.Any, error) {
 	}
 
 	if cfg.AutomaticCommit {
-		defer app.Commit(context.TODO(), &cmtabcitypes.RequestCommit{})
+		defer app.Commit()
 	}
 
 	if cfg.AutomaticFinalizeBlock {
 		height := app.LastBlockHeight() + 1
 		ctx := app.ctx.WithBlockHeight(height).WithChainID(appName)
 
-		app.FinalizeBlock(context.TODO(), &cmtabcitypes.RequestFinalizeBlock{Height: height})
+		app.FinalizeBlock(&cmtabcitypes.RequestFinalizeBlock{Height: height})
 
 		app.logger.Info("Running BeginBlock", "height", height)
 		app.moduleManager.BeginBlock(ctx)

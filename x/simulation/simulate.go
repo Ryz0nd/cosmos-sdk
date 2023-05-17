@@ -1,7 +1,6 @@
 package simulation
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"math/rand"
@@ -40,7 +39,7 @@ func initChain(
 		ConsensusParams: consensusParams,
 		Time:            genesisTimestamp,
 	}
-	res, err := app.InitChain(context.TODO(), &req)
+	res, err := app.InitChain(&req)
 	if err != nil {
 		panic(err)
 	}
@@ -166,7 +165,7 @@ func SimulateFromSeed(
 
 		// Run the BeginBlock handler
 		logWriter.AddEntry(BeginBlockEntry(int64(height)))
-		res, err := app.FinalizeBlock(context.TODO(), &request)
+		res, err := app.FinalizeBlock(&request)
 		if err != nil {
 			return true, params, err
 		}
@@ -213,7 +212,7 @@ func SimulateFromSeed(
 		logWriter.AddEntry(EndBlockEntry(int64(height)))
 
 		if config.Commit {
-			app.Commit(context.TODO(), &abci.RequestCommit{})
+			app.Commit()
 		}
 
 		if ProposerAddress == nil {

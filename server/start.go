@@ -230,7 +230,8 @@ func startStandAlone(svrCtx *Context, appCreator types.AppCreator) error {
 
 	emitServerInfoMetrics()
 
-	svr, err := server.NewServer(addr, transport, app)
+	cmtApp := NewABCIWrapper(app)
+	svr, err := server.NewServer(addr, transport, cmtApp)
 	if err != nil {
 		return fmt.Errorf("error creating listener: %v", err)
 	}
@@ -322,11 +323,12 @@ func startInProcess(svrCtx *Context, clientCtx client.Context, appCreator types.
 	} else {
 		svrCtx.Logger.Info("starting node with ABCI CometBFT in-process")
 
+		cmtApp := NewABCIWrapper(app)
 		tmNode, err = node.NewNode(
 			cfg,
 			pvm.LoadOrGenFilePV(cfg.PrivValidatorKeyFile(), cfg.PrivValidatorStateFile()),
 			nodeKey,
-			proxy.NewLocalClientCreator(app),
+			proxy.NewLocalClientCreator(cmtApp),
 			genDocProvider,
 			cmtcfg.DefaultDBProvider,
 			node.DefaultMetricsProvider(cfg.Instrumentation),
