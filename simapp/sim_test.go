@@ -1,7 +1,6 @@
 package simapp
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
