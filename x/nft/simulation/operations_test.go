@@ -1,7 +1,6 @@
 package simulation_test
 
 import (
-	"context"
 	"math/rand"
 	"testing"
 	"time"
